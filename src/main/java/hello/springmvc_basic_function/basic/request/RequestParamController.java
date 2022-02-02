@@ -1,7 +1,9 @@
 package hello.springmvc_basic_function.basic.request;
 
+import hello.springmvc_basic_function.basic.HelloData;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -99,6 +101,42 @@ public class RequestParamController {
     @RequestMapping("/request-param-map")
     public String requestParamDefault(@RequestParam Map<String, Object> paramMap) { // 요청 파라미터 값을 맵으로 다 받아와버림
         log.info("username={}, age={}", paramMap.get("username"), paramMap.get("age"));
+        return "ok";
+    }
+
+    /*
+        @ModelAttribute
+        HelloData 객체를 생성한다.
+        요청 파라미터의 이름으로 HelloData 객체의 프로퍼티를 찾는다.
+        그리고 해당 프로퍼티의 setter를 호출해서 파라미터의 값을 입력(바인딩) 한다.
+        예) 파라미터 이름이 username 이면 setUsername() 메서드를 찾아서 호출하면서 값을 입력한다.
+     */
+    /**
+     * @ModelAttribute 사용
+     * 참고: model.addAttribute(helloData) 코드도 함께 자동 적용됨, 뒤에 model을 설명할 때
+    자세히 설명
+     */
+    @ResponseBody
+    @RequestMapping("/model-attribute-v1")
+    //public String modelAttribute1(@RequestParam String username, @RequestParam int age) {
+    public String modelAttribute1(@ModelAttribute HelloData helloData) {
+//        HelloData helloData = new HelloData();
+//        helloData.setUsername(username);
+//        helloData.setAge(age);
+        log.info("username={}, age={}", helloData.getUsername(), helloData.getAge());
+        log.info("helloData={}", helloData); // helloData의 toString이 나옴
+        return "ok";
+    }
+
+    /**
+     * @ModelAttribute 생략 가능
+     * String, int 같은 단순 타입 = @RequestParam
+     * argument resolver 로 지정해둔 타입 외 = @ModelAttribute
+     */
+    @ResponseBody
+    @RequestMapping("/model-attribute-v2")
+    public String modelAttribute2(HelloData helloData) {
+        log.info("username={}, age={}", helloData.getUsername(), helloData.getAge());
         return "ok";
     }
 }
