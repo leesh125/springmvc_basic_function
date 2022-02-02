@@ -1,4 +1,4 @@
-package hello.springmvc_basic_function.basic.requestmapping;
+package hello.springmvc_basic_function.basic.request;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
